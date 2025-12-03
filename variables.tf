@@ -125,7 +125,7 @@ variable "grafana_name" {
 }
 
 variable "grafana" {
-  default = true
+  default = false
 }
 
 variable "grafana_namespace" {
@@ -145,7 +145,7 @@ variable "grafana_repository" {
 }
 
 variable "grafana_create_namespace" {
-  default = true
+  default = false
 }
 
 #======= ARGO CD =======
@@ -205,5 +205,132 @@ variable "nginx_controler_repositor" {
 }
 
 variable "nginx_controler_create_namespace" {
+  default = false
+}
+
+#======= PROMETHEUS =======
+
+variable "prometheus_name" {
+  default = "prometheus"
+}
+
+variable "prometheus" {
+  default = false
+}
+
+variable "prometheus_namespace" {
+  default = "prometheus"
+}
+
+variable "prometheus_chart" {
+  default = "prometheus"
+}
+
+variable "prometheus_version" {
+  default = "27.45.0"
+}
+
+variable "prometheus_repository" {
+  default = "https://prometheus-community.github.io/helm-charts"
+}
+
+variable "prometheus_create_namespace" {
+  default = false
+}
+
+#======= LOKI =======
+
+variable "loki_name" {
+  default = "loki"
+}
+
+variable "loki" {
+  default = false
+}
+
+variable "loki_namespace" {
+  default = "loki"
+}
+
+variable "loki_chart" {
+  default = "loki"
+}
+
+variable "loki_version" {
+  default = "6.46.0"
+}
+
+variable "loki_repository" {
+  default = "https://grafana.github.io/helm-charts"
+}
+
+variable "loki_create_namespace" {
   default = true
+}
+
+variable "loki_application_values" {
+  default = []
+}
+
+#======= SECRETS STORE  =======
+
+
+variable "secrets_store" {
+  default = false
+}
+
+variable "secrets_store_name" {
+  default = "secrets-store"
+}
+
+variable "secrets_store_chart" {
+  default = "secrets-store-csi-driver"
+}
+
+variable "secrets_store_version" {
+  default = "10.1.4"
+}
+
+variable "secrets_store_repository" {
+  default = "https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts"
+}
+
+variable "secrets_store_namespace" {
+  default = "secrets_store"
+}
+
+variable "secrets_store_create_namespace" {
+  default = false
+}
+
+
+#======= EXTERNAL DNS  =======
+
+variable "external_dns" {
+  default = false
+}
+
+variable "external_dns_name" {
+  default = "external-dns"
+}
+
+variable "external_dns_namespace" {
+  default = "external-dns"
+}
+
+variable "external_dns_chart" {
+  default = "external-dns"
+}
+
+variable "external_dns_version" {
+  default = "1.19.0"
+}
+
+variable "external_dns_repository" {
+  default = "https://kubernetes-sigs.github.io/external-dns"
+}
+
+
+variable "external_dns_create_namespace" {
+  default = false
 }

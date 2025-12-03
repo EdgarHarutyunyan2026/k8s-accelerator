@@ -52,6 +52,31 @@ argocd_create_namespace = true
 
 #======= NGINX CONTROLER =======
 
-nginx_controler                  = false
+nginx_controler                  = true
 nginx_controler_namespace        = "ingress-nginx"
 nginx_controler_create_namespace = true
+
+
+#======= LOKI =======
+
+loki                  = true
+loki_namespace        = "grafana"
+loki_create_namespace = true
+
+#======= PROMETHEUS =======
+
+prometheus                  = true
+prometheus_namespace        = "grafana"
+prometheus_create_namespace = false
+
+#======= SECRETS STORE  =======
+
+secrets_store                  = true
+secrets_store_namespace        = "secrets_store"
+secrets_store_create_namespace = true
+
+#======= EXTERNAL DNS  =======
+
+external_dns                  = true
+external_dns_namespace        = "external-dns"
+external_dns_create_namespace = true

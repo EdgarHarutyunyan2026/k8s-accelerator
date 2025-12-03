@@ -1,0 +1,63 @@
+loki:
+  deploymentMode: SimpleScalable
+  
+  loki-chunks-cache:
+    resources:
+      requests:
+        cpu: "250m"
+        memory: "1Gi"
+      limits:
+        cpu: "500m"
+        memory: "2Gi"
+
+  resources:
+    limits:
+      cpu: "1"
+      memory: "2Gi"
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+
+  storage:
+    bucketNames:
+      chunks: loki-test-sadnalsda
+      ruler: loki-test-sadnalsda
+      admin: loki-test-sadnalsda
+    
+    type: s3
+    
+    s3:
+      endpoint: s3.eu-central-1.amazonaws.com
+      region: eu-central-1
+      insecure: false
+      s3ForcePathStyle: false
+
+  schemaConfig:
+    configs:
+      - from: "2024-01-01"
+        store: tsdb
+        object_store: s3
+        schema: v13
+        index:
+          prefix: index_
+          period: 24h
+
+  commonConfig:
+    replication_factor: 1
+  enabled: true
+
+distributor:
+  enabled: true
+ingester:
+  enabled: true
+querier:
+  enabled: true
+query_scheduler:
+  enabled: true
+query_frontend:
+  enabled: false
+ruler:
+  enabled: false
+
+persistence:
+  enabled: false

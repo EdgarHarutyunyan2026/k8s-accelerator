@@ -1,7 +1,7 @@
 #======= AWS  =======
 
 module "aws" {
-  source            = "../k8s_cluster_modules/modules/cluster/aws/"
+  source            = "git::https://github.com/EdgarHarutyunyan2026/k8s-accelerator-modules//cluster/aws"
   aws_cluster_count = var.aws_cluster == true ? 1 : 0
 
   #======= VPC =======
@@ -31,7 +31,7 @@ module "aws" {
 #======= GCP  =======
 
 module "gcp" {
-  source               = "../k8s_cluster_modules/modules/cluster/gcp/"
+  source            = "git::https://github.com/EdgarHarutyunyan2026/k8s-accelerator-modules//cluster/gcp"
   gcp_cluster_count = var.gcp_cluster == true ? 1 : 0
 
   vpc_name                = var.gcp_vpc_name
@@ -50,7 +50,7 @@ module "gcp" {
 #======= NGINX CONTROLER =======
 
 module "nginx_ingress" {
-  source          = "../k8s_cluster_modules/modules/helm_release/nginx_ingress/"
+  source          = "git::https://github.com/EdgarHarutyunyan2026/k8s-accelerator-modules//helm_release/nginx_ingress"
 
   nginx_controler                  = var.nginx_controler
   nginx_controler_namespace        = var.nginx_controler_namespace
@@ -63,7 +63,7 @@ module "nginx_ingress" {
 #======= ARGO CD =======
 
 module "argo_cd" {
-  source     = "../k8s_cluster_modules/modules/helm_release/argo_cd/"
+  source     = "git::https://github.com/EdgarHarutyunyan2026/k8s-accelerator-modules//helm_release/argo_cd"
 
   argocd                  = var.argocd
   argocd_namespace        = var.argocd_namespace
@@ -76,11 +76,73 @@ module "argo_cd" {
 #======= GRAFANA  =======
 
 module "grafana" {
-  source     = "../k8s_cluster_modules/modules/helm_release/grafana/"
+  source     = "git::https://github.com/EdgarHarutyunyan2026/k8s-accelerator-modules//helm_release/grafana"
 
   grafana                  = var.grafana
   grafana_namespace        = var.grafana_namespace
   grafana_create_namespace = var.grafana_create_namespace
+
+  providers  = { helm = helm }
+  depends_on = [ module.gcp,module.aws ]
+}
+
+
+#======= LOKI  =======
+
+module "loki" {
+  source     = "../k8s-accelerator-modules/helm_release/loki"
+
+  loki                  = var.loki
+  loki_namespace        = var.loki_namespace
+  loki_create_namespace = var.loki_create_namespace
+
+  loki_application_values = [
+    file("./values/loki-values.yaml")
+  ]
+
+  providers  = { helm = helm }
+  depends_on = [ module.gcp,module.aws ]
+}
+
+
+
+#======= PROMETHEUS  =======
+
+module "prometheus" {
+  source     = "../k8s-accelerator-modules/helm_release/prometheus"
+
+  prometheus                  = var.prometheus
+  prometheus_namespace        = var.prometheus_namespace
+  prometheus_create_namespace = var.prometheus_create_namespace
+
+  providers  = { helm = helm }
+  depends_on = [ module.gcp,module.aws ]
+}
+
+
+#======= SECRETS STORE  =======
+
+module "secrets-store" {
+  source     = "../k8s-accelerator-modules/helm_release/secrets-store"
+
+  secrets_store                  = var.secrets_store
+  secrets_store_namespace        = var.secrets_store_namespace
+  secrets_store_create_namespace = var.secrets_store_create_namespace
+
+
+  providers  = { helm = helm }
+  depends_on = [ module.gcp,module.aws ]
+}
+
+#======= EXTERNAL DNS  =======
+
+module "external-dns" {
+  source     = "../k8s-accelerator-modules/helm_release/external-dns"
+
+  external_dns                  = var.external_dns
+  external_dns_namespace        = var.external_dns_namespace
+  external_dns_create_namespace = var.external_dns_create_namespace
+
 
   providers  = { helm = helm }
   depends_on = [ module.gcp,module.aws ]
